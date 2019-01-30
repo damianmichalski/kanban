@@ -11,7 +11,9 @@ function generateTemplate(name, data, basicElement) {
 
 
 // Global veriables to connect with server
-var baseUrl = 'https://kodilla.com/pl/bootcamp-api'; /*Podstawowy adres do pobierania danych z servera*/
+//var baseUrl = 'https://kodilla.com/pl/bootcamp-api'; /*Podstawowy adres do pobierania danych z servera*/
+var prefix = 'https://cors-anywhere.herokuapp.com';
+var baseUrl = prefix + 'https://kodilla.com/pl/bootcamp-api';
 var myHeaders = {
     'X-Client-Id': '3609',
     'X-Auth-Token': 'c7af3d071d08b2fc54d4b234b20dcc5e',
