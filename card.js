@@ -8,7 +8,6 @@ function Card(id, name) {
 
     this.element.querySelector('.card').addEventListener('click', function (event) {
         event.stopPropagation();
-
         if (event.target.classList.contains('close-card')) {
             self.removeCard();
         }

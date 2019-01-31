@@ -1,61 +1,54 @@
 function Column(id, name) {
-    var self = this;
+  var self = this;
 
-    this.id = id;
-    this.name = name || 'Nie podałeś nazwy';
-    this.element = generateTemplate('column-template', { name: this.name, id: this.id });
+  this.id = id;
+  this.name = name || 'Nie podałeś nazwy';
+  this.element = generateTemplate('column-template', {name: this.name, id: this.id});
 
-    this.element.querySelector('.column').addEventListener('click', function (event) {
-        if (event.target.classList.contains('close-column')) {
-            self.removeColumn();
-        }
+  this.element.querySelector('.column').addEventListener('click', function (event) {
+    if (event.target.classList.contains('close-column')) {
+      self.removeColumn();
+    }
 
-        if (event.target.classList.contains('add-card')) {
-            //self.addCard(new Card(prompt("Enter the name of the card")));
-            var cardName = prompt('Enter the name of the card');
-           // console.log(cardName);
-        if (cardName === null) {
-            document.querySelector('.errors-board').innerHTML = "Nie została podana żadna wartość!";
-            return false;
-          }
+    if (event.target.classList.contains('add-card')) {
+      var cardName = prompt('Enter the name of the card');
+      if (cardName === null) {
+        document.querySelector('.errors-board').innerHTML = "Nie została podana żadna wartość!";
+        return;
+      }
 
-          else  {
-            event.preventDefault();
+      else {
+        var data = new FormData();
+        data.append('name', cardName);
+        data.append('bootcamp_kanban_column_id', self.id);
 
-            var data = new FormData();
-            data.append('name', cardName);
-            data.append('bootcamp_kanban_column_id', self.id);
-
-            fetch(baseUrl + '/card', {
-              method: 'POST',
-              headers: myHeaders,
-              body: data,
+        fetch(baseUrl + '/card', {
+          method: 'POST',
+          headers: myHeaders,
+          body: data,
+        })
+            .then(function (resp) {
+              return resp.json();
             })
-                .then(function (resp) {
-                  return resp.json();
-                })
-                .then(function (resp) {
-                  var card = new Card(resp.id, cardName);
-                  self.addCard(new Card(cardName));
-                });
-          }
-
-
-        }
-    });
+            .then(function (resp) {
+              self.addCard(new Card(cardName));
+            });
+      }
+    }
+  });
 }
 
 Column.prototype = {
-  addCard: function(card) {
+  addCard: function (card) {
     this.element.querySelector('ul').appendChild(card.element);
   },
-  removeColumn: function() {
+  removeColumn: function () {
     var self = this;
-    fetch(baseUrl + '/column/' + self.id, { method: 'DELETE', headers: myHeaders })
-        .then(function(resp) {
+    fetch(baseUrl + '/column/' + self.id, {method: 'DELETE', headers: myHeaders})
+        .then(function (resp) {
           return resp.json();
         })
-        .then(function(resp) {
+        .then(function (resp) {
           self.element.parentNode.removeChild(self.element);
         });
   }
