@@ -9,7 +9,18 @@ var board = {
 
 document.querySelector('#board .create-column').addEventListener('click', function () {
   var name = prompt('Enter a column name');
+  if (name === null) {
+    document.querySelector('.errors-board').innerHTML = "Nie została podana żadna wartość!";
+    return;
+  }
+  if (name.trim() == ''){
+    document.querySelector('.errors-board').innerHTML = "Nie podałeś nazwy!";
+    return;
+  }
+
   var data = new FormData();
+
+  document.querySelector('.errors-board').innerHTML = "";
 
   data.append('name', name);
 

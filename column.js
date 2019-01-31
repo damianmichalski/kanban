@@ -16,8 +16,13 @@ function Column(id, name) {
         document.querySelector('.errors-board').innerHTML = "Nie została podana żadna wartość!";
         return;
       }
+      if (cardName.trim() == ''){
+        document.querySelector('.errors-board').innerHTML = "Nie podałeś nazwy!";
+        return;
+      }
 
-      else {
+
+        document.querySelector('.errors-board').innerHTML = "";
         var data = new FormData();
         data.append('name', cardName);
         data.append('bootcamp_kanban_column_id', self.id);
@@ -31,9 +36,9 @@ function Column(id, name) {
               return resp.json();
             })
             .then(function (resp) {
-              self.addCard(new Card(cardName));
+              self.addCard(new Card(resp.id, cardName));
             });
-      }
+
     }
   });
 }
